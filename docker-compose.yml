@@ -1,10 +1,40 @@
-version: '3'
+version: '3.7'
+
 services:
+  api:
+    container_name: Api_atividade3_Amira_Kaleu_Lucas
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - ${API_PORT}:${API_PORT}
+    env_file:
+      - .env
+    networks:
+      - docker-network
+    depends_on:
+      - postgres
+    
   postgres:
-    image: 'postgres:9.6.1'
+    container_name: DB_atividade3_Amira_Kaleu_Lucas
+    image: postgres:13-alpine
+    
+    networks:
+      - docker-network
+
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_DB: ${DB_NAME}
+      PG_DATA: /var/lib/postgresql/data
     ports:
       - '5432:5432'
-    environment:
-      POSTGRES_USER: 'test'
-      POSTGRES_PASSWORD: 'test'
-      POSTGRES_DB: 'test'
+    volumes:
+      - api_db_data:/var/lib/postgresql/data
+networks:
+  docker-network:
+volumes:
+  api_db_data:
