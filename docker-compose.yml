@@ -1,10 +1,30 @@
-version: '3'
+version: '3.1'
 services:
-  postgres:
-    image: 'postgres:9.6.1'
+  api:
+    container_name: EDUZYTO
+    build: .
     ports:
-      - '5432:5432'
+      -${API_PORT}:${API_PORT}
+    volumes:
+      - .:/app
+      - /app/node_modules
+    env_file:
+      - .env
+    networks:
+      - docker-network
+    depends_on:
+      - postgres
+
+  postgres:
+    container_name: EDUZYTO-POSTGRES
+    image: 'postgres:13-alpine'
+    ports:
+      - '${TYPEORM_PORT}:${TYPEORM_PORT}'
     environment:
-      POSTGRES_USER: 'test'
-      POSTGRES_PASSWORD: 'test'
-      POSTGRES_DB: 'test'
+      POSTGRES_USER: ${TYPEORM_USERNAME}
+      POSTGRES_PASSWORD: ${TYPEORM_PASSWORD}
+      POSTGRES_DB: ${TYPEORM_DATABASE}
+    networks:
+      - docker-network
+networks:
+  docker-network:
