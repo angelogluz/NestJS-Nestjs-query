@@ -1,5 +1,18 @@
 version: '3'
 services:
+  api: 
+    build: .
+    ports:
+      -3000:3000
+    volumes:
+      -.:/app
+      -/app/node_modules
+    env_file:
+      -.env
+    networks:
+      - docker-network
+    depends_on:
+     - postgres
   postgres:
     image: 'postgres:9.6.1'
     ports:
@@ -8,3 +21,7 @@ services:
       POSTGRES_USER: 'test'
       POSTGRES_PASSWORD: 'test'
       POSTGRES_DB: 'test'
+      networks: docker-network
+
+networks:
+  docker-network:
