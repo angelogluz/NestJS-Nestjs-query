@@ -4,7 +4,7 @@
     "port": 5432,
     "username": "test",
     "password": "test",
-    "database": "postgres",
+    "database": "test",
     "synchronize": false,
     "logging": false,
     "entities": [
