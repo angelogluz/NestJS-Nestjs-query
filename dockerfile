@@ -1,9 +1,9 @@
-FROM node:16-alpine
+FROM node:16-alpine As development
 
-WORKDIR /app
+WORKDIR /usr/src/App
 
-COPY package.json .
-COPY yarn.lock .
-RUN yarn
+COPY package.json package-lock.json ./
+RUN npm i
 COPY . .
-CMD ["yarn", "start:dev"]
+
+CMD npm run start:dev
